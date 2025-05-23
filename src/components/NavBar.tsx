@@ -1,5 +1,7 @@
-import { Link, Text, Flex, Switch, Box } from "@radix-ui/themes";
-import { MdLightMode, MdDarkMode, MdCatchingPokemon } from "react-icons/md";
+import { Link, Text, Flex } from "@radix-ui/themes";
+import { MdCatchingPokemon } from "react-icons/md";
+import { RiMoonClearLine } from "react-icons/ri";
+import { TbSun } from "react-icons/tb";
 
 interface Props {
   colorMode: "light" | "dark";
@@ -22,9 +24,9 @@ const NavBar = ({ colorMode, toggleColorMode }: Props) => {
         onClick={() => toggleColorMode()}
       >
         {colorMode === "dark" ? (
-          <MdDarkMode size={"20"} />
+          <RiMoonClearLine size={"20"} />
         ) : (
-          <MdLightMode size={"20"} />
+          <TbSun size={"20"} />
         )}
       </button>
     </nav>

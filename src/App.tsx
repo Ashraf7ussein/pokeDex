@@ -1,6 +1,7 @@
 import { useState } from "react";
 import NavBar from "./components/NavBar";
-import { Theme } from "@radix-ui/themes";
+import { Heading, Theme, Text } from "@radix-ui/themes";
+import CardsGrid from "./components/CardsGrid";
 
 function App() {
   const [colorMode, setColorMode] = useState<"light" | "dark">("light");
@@ -12,8 +13,10 @@ function App() {
     <>
       <Theme appearance={colorMode}>
         <NavBar colorMode={colorMode} toggleColorMode={toggleColorMode} />
-        <main>
-          <h1 className="text-3xl font-bold underline">Hello world!</h1>
+        <main className="flex flex-col items-center px-10">
+          <Heading size={"8"}>Pokémon TCG</Heading>
+          <Text mt={"1"}>The Ultimate Pokémon Card Database</Text>
+          <CardsGrid />
         </main>
       </Theme>
     </>
