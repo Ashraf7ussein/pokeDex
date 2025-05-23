@@ -1,7 +1,12 @@
 import { Link, Text, Flex, Switch, Box } from "@radix-ui/themes";
-import { MdCatchingPokemon } from "react-icons/md";
+import { MdLightMode, MdDarkMode, MdCatchingPokemon } from "react-icons/md";
 
-const NavBar = () => {
+interface Props {
+  colorMode: "light" | "dark";
+  toggleColorMode: () => void;
+}
+
+const NavBar = ({ colorMode, toggleColorMode }: Props) => {
   return (
     <nav className="flex space-x-6 border-b mb-5 px-5 h-14 items-center justify-between">
       <Link href="/" className="flex">
@@ -12,10 +17,16 @@ const NavBar = () => {
           </Text>
         </Flex>
       </Link>
-      <Box>
-        <Text mx={"2"}>Dark Mode</Text>
-        <Switch color="indigo" defaultChecked />
-      </Box>
+      <button
+        className="border rounded-full border-neutral-300 p-1"
+        onClick={() => toggleColorMode()}
+      >
+        {colorMode === "dark" ? (
+          <MdDarkMode size={"20"} />
+        ) : (
+          <MdLightMode size={"20"} />
+        )}
+      </button>
     </nav>
   );
 };
