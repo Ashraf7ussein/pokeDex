@@ -1,9 +1,9 @@
 import { useState } from "react";
-import NavBar from "./components/NavBar";
+import NavBar from "../components/NavBar";
 import { Heading, Theme, Text } from "@radix-ui/themes";
-import CardsGrid from "./components/CardsGrid";
+import CardsGrid from "../components/CardsGrid";
 
-function App() {
+function HomePage() {
   const [colorMode, setColorMode] = useState<"light" | "dark">("light");
 
   const toggleColorMode = () => {
@@ -23,4 +23,4 @@ function App() {
   );
 }
 
-export default App;
+export default HomePage;
