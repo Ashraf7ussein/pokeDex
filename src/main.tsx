@@ -5,7 +5,7 @@ import "@radix-ui/themes/styles.css";
 import App from "./App.tsx";
 import "./index.css";
 
-const quetyClient = new QueryClient({});
+const quetyClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
