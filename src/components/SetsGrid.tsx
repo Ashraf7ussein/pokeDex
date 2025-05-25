@@ -19,8 +19,8 @@ const SetsGrid = () => {
           <Grid gap="3" my="5" columns={{ initial: "2", md: "3", lg: "5" }}>
             {isLoading
               ? skeletonList.map((skeleton) => <CardSkeleton key={skeleton} />)
-              : sets?.map((set) => (
-                  <Link to={`/sets/${set.id}`}>
+              : sets?.map((set, index) => (
+                  <Link key={index} to={`/sets/${set.id}`}>
                     <Card
                       key={set.id}
                       size="3"

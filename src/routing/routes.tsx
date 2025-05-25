@@ -14,6 +14,7 @@ const router = createBrowserRouter([
       { path: "sets", element: <SetsPage /> },
       { path: "sets/:id", element: <SetDetailsPage /> },
       { path: "sets/:id/:cardId", element: <CardDetailspage /> },
+      { path: "search/q", element: <SetDetailsPage /> },
     ],
   },
 ]);
