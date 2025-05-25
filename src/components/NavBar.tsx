@@ -20,19 +20,16 @@ const NavBar = ({ colorMode, toggleColorMode }: Props) => {
           </Text>
         </Flex>
       </Link>
-      <Flex gap={"3"} align={"center"}>
-        <Link to="/sets">Sets</Link>
-        <button
-          className="border rounded-full border-neutral-300 p-1"
-          onClick={() => toggleColorMode()}
-        >
-          {colorMode === "dark" ? (
-            <RiMoonClearLine size={"20"} />
-          ) : (
-            <TbSun size={"20"} />
-          )}
-        </button>
-      </Flex>
+      <button
+        className="border rounded-full border-neutral-300 p-1"
+        onClick={() => toggleColorMode()}
+      >
+        {colorMode === "dark" ? (
+          <RiMoonClearLine size={"20"} />
+        ) : (
+          <TbSun size={"20"} />
+        )}
+      </button>
     </nav>
   );
 };
