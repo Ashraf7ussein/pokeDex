@@ -1,8 +1,10 @@
 import { DataList, Heading, Text } from "@radix-ui/themes";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-import { PokemonType, typeColors, typeIcons } from "../constants/types";
+import { PokemonType, typeIcons } from "../constants/types";
 import apiClient from "../services/api-client";
+import ability from "../assets/ability.png";
+import CardSkeleton from "../components/CardSkeleton";
 
 interface Card {
   id: string;
@@ -49,20 +51,18 @@ const CardDetailspage = () => {
     queryKey: ["cards", id, cardId],
     queryFn: fetchCardDetails,
   });
+  const skeletonList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-  if (isLoading) return <Text>Loading...</Text>;
+  if (isLoading)
+    return skeletonList.map((skeleton) => <CardSkeleton key={skeleton} />);
   if (error) return <Text color="red">Error: {error.message}</Text>;
 
   const TypeIcon = card?.types?.[0]
     ? typeIcons[card.types[0].toLowerCase() as PokemonType]
     : null;
 
-  const iconColor = card?.types?.[0]
-    ? typeColors[card.types[0].toLowerCase() as PokemonType]
-    : undefined;
-
   return (
-    <div className="flex flex-col md:flex-row p-20 gap-20">
+    <div className="flex flex-col md:flex-row p-5 lg:p-20 gap-20">
       <img
         className="max-w-md w-full rounded-xl shadow-md"
         src={card?.images.large}
@@ -72,7 +72,6 @@ const CardDetailspage = () => {
         <Heading as="h2" size="8">
           {card?.name}
         </Heading>
-
         <DataList.Item className="border-b border-neutral-300 pb-3 mb-4">
           <DataList.Label>
             <Text size="5">
@@ -83,7 +82,7 @@ const CardDetailspage = () => {
             <Text size="5" mx={"2"}>
               HP {card?.hp}
             </Text>
-            {TypeIcon && <TypeIcon size={24} color={iconColor} />}
+            {TypeIcon && <img src={TypeIcon} className="w-[30px] h-[30px]" />}
           </DataList.Value>
         </DataList.Item>
 
@@ -109,9 +108,7 @@ const CardDetailspage = () => {
           </DataList.Value>
         </DataList.Item>
         <DataList.Item>
-          <Text size="5" weight="bold" mb="2">
-            Abilities
-          </Text>
+          <img src={ability} className="w-[100px]" />
         </DataList.Item>
         {card?.abilities && card.abilities.length > 0 ? (
           card.abilities.map((ability) => (
