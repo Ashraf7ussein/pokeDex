@@ -16,7 +16,11 @@ const SetsGrid = () => {
           <Text mt="9" size="5">
             Featured Sets
           </Text>
-          <Grid gap="3" my="5" columns={{ initial: "2", md: "3", lg: "5" }}>
+          <Grid
+            gap="3"
+            my="5"
+            columns={{ initial: "1", sm: "2", md: "3", lg: "5" }}
+          >
             {isLoading
               ? skeletonList.map((skeleton) => <CardSkeleton key={skeleton} />)
               : sets?.map((set, index) => (
@@ -40,7 +44,7 @@ const SetsGrid = () => {
                       <Flex direction="column" gap="2" p="3">
                         <Flex align="center" gap="3">
                           <img
-                            className="w-10 h-10 object-contain"
+                            className="w-10 h-10 object-contain hidden md:block"
                             src={set.images.symbol}
                             alt={set.name}
                           />

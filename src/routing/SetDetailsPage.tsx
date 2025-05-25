@@ -38,7 +38,12 @@ const SetDetailsPage = () => {
   return (
     <>
       {cardsFromState && cardsFromState.length === 0 && <p>No items found!</p>}
-      <Grid gap="3" px="9" mt="3" columns={{ initial: "2", md: "3", lg: "5" }}>
+      <Grid
+        gap="3"
+        px="9"
+        mt="3"
+        columns={{ initial: "1", sm: "2", md: "3", lg: "5" }}
+      >
         {cardsToRender?.map((card) => (
           <Link to={`/sets/${id}/${card.id}`} key={card.id}>
             <img

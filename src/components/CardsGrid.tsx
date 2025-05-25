@@ -17,7 +17,11 @@ const CardsGrid = () => {
           <Text mt="9" size="5">
             Featured Cards
           </Text>
-          <Grid gap="3" mt="3" columns={{ initial: "2", md: "3", lg: "5" }}>
+          <Grid
+            gap="3"
+            mt="3"
+            columns={{ initial: "1", sm: "2", md: "3", lg: "5" }}
+          >
             {isLoading
               ? skeletonList.map((skeleton) => <CardSkeleton key={skeleton} />)
               : cards?.map((card) => (

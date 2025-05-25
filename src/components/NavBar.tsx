@@ -3,6 +3,7 @@ import { MdCatchingPokemon } from "react-icons/md";
 import { RiMoonClearLine } from "react-icons/ri";
 import { TbSun } from "react-icons/tb";
 import { Link } from "react-router-dom";
+import { useTheme } from "../context/ThemeContext";
 
 interface Props {
   colorMode: "light" | "dark";
@@ -10,6 +11,7 @@ interface Props {
 }
 
 const NavBar = ({ colorMode, toggleColorMode }: Props) => {
+  const { theme, toggleTheme } = useTheme();
   return (
     <nav className="flex space-x-6 border-b mb-5 px-5 h-14 items-center justify-between">
       <Link to={"/"} className="flex">
@@ -22,7 +24,7 @@ const NavBar = ({ colorMode, toggleColorMode }: Props) => {
       </Link>
       <button
         className="border rounded-full border-neutral-300 p-1"
-        onClick={() => toggleColorMode()}
+        onClick={toggleTheme}
       >
         {colorMode === "dark" ? (
           <RiMoonClearLine size={"20"} />
