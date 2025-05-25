@@ -1,10 +1,9 @@
-import { DataList, Heading, Spinner, Text } from "@radix-ui/themes";
+import { DataList, Heading, Spinner, Text, Skeleton } from "@radix-ui/themes";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { PokemonType, typeIcons } from "../constants/types";
 import apiClient from "../services/api-client";
 import ability from "../assets/ability.png";
-import CardSkeleton from "../components/CardSkeleton";
 import { useState } from "react";
 
 interface Card {
@@ -60,10 +59,7 @@ const CardDetailspage = () => {
     queryKey: ["cards", id, cardId],
     queryFn: fetchCardDetails,
   });
-  const skeletonList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-  if (isLoading)
-    return skeletonList.map((skeleton) => <CardSkeleton key={skeleton} />);
   if (error) return <Text color="red">Error: {error.message}</Text>;
 
   const TypeIcon = card?.types?.[0]
@@ -88,30 +84,46 @@ const CardDetailspage = () => {
 
   return (
     <div className="flex flex-col md:flex-row p-5 lg:p-20 gap-20">
-      <img
-        className="max-w-md w-full rounded-xl shadow-lg"
-        src={card?.images.large}
-        alt={card?.name}
-      />
+      {isLoading ? (
+        <Skeleton className="w-full max-w-md h-[450px] rounded-xl" />
+      ) : (
+        <img
+          className="max-w-md w-full rounded-xl shadow-lg"
+          src={card?.images.large}
+          alt={card?.name}
+        />
+      )}
+
       <DataList.Root>
         <Heading as="h2" size="8" className="mb-4">
-          {card?.name}
+          {isLoading ? <Skeleton width="200px" height="32px" /> : card?.name}
         </Heading>
 
         <DataList.Item>
           <DataList.Label>
-            <Text size="5">
-              {card?.supertype} {card?.subtypes?.[0] && `- ${card.subtypes[0]}`}
-            </Text>
+            {isLoading ? (
+              <Skeleton width="150px" />
+            ) : (
+              <Text size="5">
+                {card?.supertype}{" "}
+                {card?.subtypes?.[0] && `- ${card.subtypes[0]}`}
+              </Text>
+            )}
           </DataList.Label>
           <DataList.Value className="flex items-center gap-3">
-            <Text size="5">HP {card?.hp}</Text>
-            {TypeIcon && (
-              <img
-                src={TypeIcon}
-                alt="Type Icon"
-                className="w-[30px] h-[30px]"
-              />
+            {isLoading ? (
+              <Skeleton width="100px" />
+            ) : (
+              <>
+                <Text size="5">HP {card?.hp}</Text>
+                {TypeIcon && (
+                  <img
+                    src={TypeIcon}
+                    alt="Type Icon"
+                    className="w-[30px] h-[30px]"
+                  />
+                )}
+              </>
             )}
           </DataList.Value>
         </DataList.Item>
@@ -164,7 +176,11 @@ const CardDetailspage = () => {
             <Text size="4">Avg Sell Price</Text>
           </DataList.Label>
           <DataList.Value>
-            <Text size="5">{card?.cardmarket.prices.averageSellPrice}$</Text>
+            {isLoading ? (
+              <Skeleton width="80px" />
+            ) : (
+              <Text size="5">{card?.cardmarket.prices.averageSellPrice}$</Text>
+            )}
           </DataList.Value>
         </DataList.Item>
         <DataList.Item className="border-b border-neutral-300 pb-3 mb-4">
@@ -172,7 +188,11 @@ const CardDetailspage = () => {
             <Text size="4">Trend Price</Text>
           </DataList.Label>
           <DataList.Value>
-            <Text size="5">{card?.cardmarket.prices.trendPrice}$</Text>
+            {isLoading ? (
+              <Skeleton width="80px" />
+            ) : (
+              <Text size="5">{card?.cardmarket.prices.trendPrice}$</Text>
+            )}
           </DataList.Value>
         </DataList.Item>
 
@@ -181,8 +201,8 @@ const CardDetailspage = () => {
             <DataList.Item>
               <img src={ability} className="w-[100px]" />
 
-              {card.abilities.map((ability) => (
-                <DataList.Item>
+              {card.abilities.map((ability, index) => (
+                <DataList.Item key={index}>
                   <DataList.Label>
                     <Text size="4">{ability.name} :</Text>
                   </DataList.Label>
@@ -204,8 +224,8 @@ const CardDetailspage = () => {
                 Attacks
               </Text>
 
-              {card.attacks.map((attack) => (
-                <DataList.Item>
+              {card.attacks.map((attack, index) => (
+                <DataList.Item key={index}>
                   <DataList.Label>
                     <Text size="4">{attack.name} :</Text>
                   </DataList.Label>
@@ -227,18 +247,16 @@ const CardDetailspage = () => {
                 Weaknesses
               </Text>
 
-              {card.weaknesses.map((weakness) => (
-                <DataList.Item>
+              {card.weaknesses.map((weakness, index) => (
+                <DataList.Item key={index}>
                   <DataList.Label>
-                    {TypeIcon && (
-                      <img
-                        src={
-                          typeIcons[weakness.type.toLowerCase() as PokemonType]
-                        }
-                        alt="Type Icon"
-                        className="w-[25px] h-[25px]"
-                      />
-                    )}
+                    <img
+                      src={
+                        typeIcons[weakness.type.toLowerCase() as PokemonType]
+                      }
+                      alt="Type Icon"
+                      className="w-[25px] h-[25px]"
+                    />
                   </DataList.Label>
                   <DataList.Value>
                     <Text as="p" size="3" color="gray">
@@ -256,9 +274,13 @@ const CardDetailspage = () => {
             <Text size="4">Rarity</Text>
           </DataList.Label>
           <DataList.Value>
-            <Text as="p" size="3" color="gray">
-              {card?.rarity}
-            </Text>
+            {isLoading ? (
+              <Skeleton width="80px" />
+            ) : (
+              <Text as="p" size="3" color="gray">
+                {card?.rarity}
+              </Text>
+            )}
           </DataList.Value>
         </DataList.Item>
       </DataList.Root>

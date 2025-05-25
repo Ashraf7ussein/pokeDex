@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link, useLocation, useParams } from "react-router-dom";
 import apiClient from "../services/api-client";
 import { Grid } from "@radix-ui/themes";
+import CardSkeleton from "../components/CardSkeleton";
 
 interface Card {
   id: string;
@@ -27,12 +28,27 @@ const SetDetailsPage = () => {
   } = useQuery<Card[], Error>({
     queryKey: ["cards", id],
     queryFn: fetchSetDetails,
-    enabled: !cardsFromState, //Only fetch if we don't already have the cards
+    enabled: !cardsFromState,
   });
+
+  const skeletonList = Array.from({ length: 10 });
 
   const cardsToRender = cardsFromState || fetchedCards;
 
-  if (!cardsToRender && isLoading) return <p>Loading...</p>;
+  if (!cardsToRender && isLoading)
+    return (
+      <Grid
+        gap="3"
+        p={"5"}
+        mt="3"
+        columns={{ initial: "2", sm: "3", md: "4", lg: "5" }}
+      >
+        {skeletonList.map((_, index) => (
+          <CardSkeleton key={index} />
+        ))}
+      </Grid>
+    );
+
   if (!cardsToRender && error) return <p>Error: {error.message}</p>;
 
   return (
@@ -42,7 +58,7 @@ const SetDetailsPage = () => {
         gap="3"
         px="9"
         mt="3"
-        columns={{ initial: "1", sm: "2", md: "3", lg: "5" }}
+        columns={{ initial: "2", sm: "3", md: "4", lg: "5" }}
       >
         {cardsToRender?.map((card) => (
           <Link to={`/sets/${id}/${card.id}`} key={card.id}>

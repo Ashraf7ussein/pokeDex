@@ -1,6 +1,6 @@
 // Import image assets
 import darkness from "../assets/darkness.png";
-import electric from "../assets/electric.png";
+import lightning from "../assets/lightning.png";
 import energyWhite from "../assets/energyWhite.png";
 import fairy from "../assets/fairy.png";
 import fighting from "../assets/fighting.png";
@@ -15,7 +15,7 @@ export type PokemonType =
   | "normal"
   | "fire"
   | "water"
-  | "electric"
+  | "lightning"
   | "grass"
   | "ice"
   | "fighting"
@@ -31,7 +31,7 @@ const typeIcons: Record<PokemonType, string> = {
   normal: energyWhite,
   fire,
   water,
-  electric,
+  lightning,
   grass,
   fighting,
   psychic,
@@ -48,7 +48,7 @@ const typeColors: Record<PokemonType, string> = {
   normal: "#A8A77A",
   fire: "#EE8130",
   water: "#6390F0",
-  electric: "#F7D02C",
+  lightning: "#F7D02C",
   grass: "#7AC74C",
   fighting: "#C22E28",
   psychic: "#F95587",
