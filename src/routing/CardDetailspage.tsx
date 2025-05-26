@@ -1,4 +1,12 @@
-import { DataList, Heading, Spinner, Text, Skeleton } from "@radix-ui/themes";
+import {
+  DataList,
+  Heading,
+  Spinner,
+  Text,
+  Skeleton,
+  Button,
+  Flex,
+} from "@radix-ui/themes";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { PokemonType, typeIcons } from "../constants/types";
@@ -40,6 +48,10 @@ interface Card {
     id: string;
     name: string;
   };
+  resistances: {
+    type: string;
+    value: string;
+  }[];
 }
 
 const CardDetailspage = () => {
@@ -85,10 +97,10 @@ const CardDetailspage = () => {
   return (
     <div className="flex flex-col md:flex-row p-5 lg:p-20 gap-20">
       {isLoading ? (
-        <Skeleton className="w-full max-w-md h-[450px] rounded-xl" />
+        <Skeleton className="w-full max-w-md rounded-xl" />
       ) : (
         <img
-          className="max-w-md w-full rounded-xl shadow-lg"
+          className="max-w-md w-full rounded-xl shadow-2xl"
           src={card?.images.large}
           alt={card?.name}
         />
@@ -115,7 +127,9 @@ const CardDetailspage = () => {
               <Skeleton width="100px" />
             ) : (
               <>
-                <Text size="5">HP {card?.hp}</Text>
+                <Text as="p" size="3" color="gray">
+                  HP {card?.hp}
+                </Text>
                 {TypeIcon && (
                   <img
                     src={TypeIcon}
@@ -128,21 +142,35 @@ const CardDetailspage = () => {
           </DataList.Value>
         </DataList.Item>
 
+        <DataList.Item>
+          <DataList.Label>
+            <Text size="5">Rarity</Text>
+          </DataList.Label>
+          <DataList.Value>
+            {isLoading ? (
+              <Skeleton width="80px" />
+            ) : (
+              <Text as="p" size="3" color="gray">
+                {card?.rarity}
+              </Text>
+            )}
+          </DataList.Value>
+        </DataList.Item>
+
         {card?.evolvesFrom && (
           <DataList.Item>
             <DataList.Label>
               <Text size="5">Evolves From</Text>
             </DataList.Label>
             <DataList.Value>
-              <Text
-                as="p"
-                size="4"
+              <Button
+                variant="soft"
                 onClick={() => handleSearch("evolves", card?.evolvesFrom)}
-                className="flex items-center gap-2 cursor-pointer text-blue-600 hover:underline"
               >
+                {" "}
                 {card.evolvesFrom}
                 {evolveLoading && <Spinner size="3" mt="1" />}
-              </Text>
+              </Button>
             </DataList.Value>
           </DataList.Item>
         )}
@@ -153,36 +181,40 @@ const CardDetailspage = () => {
               <Text size="5">Set</Text>
             </DataList.Label>
             <DataList.Value>
-              <Text
-                as="p"
-                size="4"
+              <Button
+                variant="soft"
                 onClick={() => handleSearch("set", card?.set.id)}
-                className="flex items-center gap-2 cursor-pointer text-blue-600 hover:underline"
               >
+                {" "}
                 {card.set.name}
                 {packLoading && <Spinner size="3" mt="1" />}
-              </Text>
+              </Button>
             </DataList.Value>
           </DataList.Item>
         )}
 
-        <DataList.Item>
-          <Text size="5" weight="bold" mb="2">
-            Prices
-          </Text>
-        </DataList.Item>
-        <DataList.Item>
-          <DataList.Label>
-            <Text size="4">Avg Sell Price</Text>
-          </DataList.Label>
-          <DataList.Value>
-            {isLoading ? (
-              <Skeleton width="80px" />
-            ) : (
-              <Text size="5">{card?.cardmarket.prices.averageSellPrice}$</Text>
-            )}
-          </DataList.Value>
-        </DataList.Item>
+        {card?.cardmarket?.prices && (
+          <>
+            <Text size="5" weight="bold" mb="2">
+              Prices
+            </Text>
+            <DataList.Item>
+              <DataList.Label>
+                <Text size="4">Avg Sell Price</Text>
+              </DataList.Label>
+              <DataList.Value>
+                {isLoading ? (
+                  <Skeleton width="80px" />
+                ) : (
+                  <Text as="p" size="3" color="gray">
+                    {card?.cardmarket.prices.averageSellPrice}$
+                  </Text>
+                )}
+              </DataList.Value>
+            </DataList.Item>
+          </>
+        )}
+
         <DataList.Item className="border-b border-neutral-300 pb-3 mb-4">
           <DataList.Label>
             <Text size="4">Trend Price</Text>
@@ -191,7 +223,9 @@ const CardDetailspage = () => {
             {isLoading ? (
               <Skeleton width="80px" />
             ) : (
-              <Text size="5">{card?.cardmarket.prices.trendPrice}$</Text>
+              <Text as="p" size="3" color="gray">
+                {card?.cardmarket.prices.trendPrice}$
+              </Text>
             )}
           </DataList.Value>
         </DataList.Item>
@@ -240,49 +274,49 @@ const CardDetailspage = () => {
           </>
         )}
 
-        {card?.weaknesses && (
-          <>
-            <DataList.Item>
+        <Flex gap="8" wrap="wrap">
+          {card?.weaknesses && (
+            <Flex direction="column" gap="3">
               <Text size="5" weight="bold">
                 Weaknesses
               </Text>
-
               {card.weaknesses.map((weakness, index) => (
-                <DataList.Item key={index}>
-                  <DataList.Label>
-                    <img
-                      src={
-                        typeIcons[weakness.type.toLowerCase() as PokemonType]
-                      }
-                      alt="Type Icon"
-                      className="w-[25px] h-[25px]"
-                    />
-                  </DataList.Label>
-                  <DataList.Value>
-                    <Text as="p" size="3" color="gray">
-                      Damage: {weakness.value}
-                    </Text>
-                  </DataList.Value>
-                </DataList.Item>
+                <Flex key={index} gap="3" align="center">
+                  <img
+                    src={typeIcons[weakness.type.toLowerCase() as PokemonType]}
+                    alt={`${weakness.type} icon`}
+                    className="w-[25px] h-[25px]"
+                  />
+                  <Text as="p" size="5" color="gray">
+                    {weakness.value}
+                  </Text>
+                </Flex>
               ))}
-            </DataList.Item>
-          </>
-        )}
+            </Flex>
+          )}
 
-        <DataList.Item>
-          <DataList.Label>
-            <Text size="4">Rarity</Text>
-          </DataList.Label>
-          <DataList.Value>
-            {isLoading ? (
-              <Skeleton width="80px" />
-            ) : (
-              <Text as="p" size="3" color="gray">
-                {card?.rarity}
+          {card?.resistances && (
+            <Flex direction="column" gap="3">
+              <Text size="5" weight="bold">
+                Resistances
               </Text>
-            )}
-          </DataList.Value>
-        </DataList.Item>
+              {card.resistances.map((resistance, index) => (
+                <Flex key={index} gap="3" align="center">
+                  <img
+                    src={
+                      typeIcons[resistance.type.toLowerCase() as PokemonType]
+                    }
+                    alt={`${resistance.type} icon`}
+                    className="w-[25px] h-[25px]"
+                  />
+                  <Text as="p" size="5" color="gray">
+                    {resistance.value}
+                  </Text>
+                </Flex>
+              ))}
+            </Flex>
+          )}
+        </Flex>
       </DataList.Root>
     </div>
   );
