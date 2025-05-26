@@ -10,8 +10,8 @@ interface Props {
   toggleColorMode: () => void;
 }
 
-const NavBar = ({ colorMode, toggleColorMode }: Props) => {
-  const { theme, toggleTheme } = useTheme();
+const NavBar = ({ colorMode }: Props) => {
+  const { toggleTheme } = useTheme();
   return (
     <nav className="flex space-x-6 border-b mb-5 px-5 h-14 items-center justify-between">
       <Link to={"/"} className="flex">
