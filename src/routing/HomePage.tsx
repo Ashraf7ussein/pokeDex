@@ -16,7 +16,7 @@ function HomePage() {
       setLoading(true);
       apiClient.get(`/cards?q=name:${searchText}`).then((res) => {
         setLoading(false);
-        navigate("/search/q", { state: { cards: res.data.data } });
+        navigate("/search/q", { state: { cards: res.data.data, searchText } });
       });
     }
   };
